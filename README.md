@@ -5,8 +5,8 @@ This tool brings the following additional feature: for each user without SPNs, i
 This tool can be used against all users of a domain, or supplied in a list, or one user supplied in the CLI.
 
 More information about this attack
- - [The Hacker Recipes - Kerberoast](https://www.thehacker.recipes/active-directory-domain-services/movement/kerberos/kerberoast)
- - [The Hacker Recipes - Targeted Kerberoasting](https://www.thehacker.recipes/active-directory-domain-services/movement/access-control-entries/targeted-kerberoasting)
+ - [The Hacker Recipes - Kerberoast](https://www.thehacker.recipes/ad/movement/kerberos/kerberoast)
+ - [The Hacker Recipes - Targeted Kerberoasting](https://www.thehacker.recipes/ad/movement/access-controls/targeted-kerberoasting)
 
 # Usage
 
