@@ -14,7 +14,7 @@ This tool supports the following authentications
  - (NTLM) Cleartext password
  - (NTLM) [Pass-the-hash](https://www.thehacker.recipes/active-directory-domain-services/movement/lm-and-ntlm/pass-the-hash)
  - (Kerberos) Cleartext password
- - (Kerberos) [Pass-the-key](https://www.thehacker.recipes/active-directory-domain-services/movement/kerberos/pass-the-key) / [Overpass-the-hash](https://www.thehacker.recipes/active-directory-domain-services/movement/kerberos/overpass-the-hash)
+ - (Kerberos) [Pass-the-key](https://www.thehacker.recipes/ad/movement/kerberos/ptk) / [Overpass-the-hash](https://www.thehacker.recipes/ad/movement/kerberos/opth)
  - (Kerberos) [Pass-the-cache](https://www.thehacker.recipes/active-directory-domain-services/movement/kerberos/pass-the-cache) (type of [Pass-the-ticket](https://www.thehacker.recipes/active-directory-domain-services/movement/kerberos/pass-the-ticket))
 
 Among other things, targetedKerberoast supports multi-level verbosity, just append `-v`, `-vv`, ... to the command :)
