@@ -467,7 +467,7 @@ def parse_args():
     parser.add_argument('--use-ldaps', action='store_true', help='Use LDAPS instead of LDAP')
     parser.add_argument('--only-abuse', action='store_true', help='Ignore accounts that already have an SPN and focus on targeted Kerberoasting')
     parser.add_argument('--no-abuse', action='store_true', help="Don't attempt targeted Kerberoasting")
-    parser.add_argument('--dc-host', action='store', help='Domain to query/request if different than the domain of the user. Allows for Kerberoasting across trusts.')
+    parser.add_argument('--dc-host', action='store', help='Hostname of the target, can be used if port 445 is blocked or if NTLM is disabled')
 
 
     authconn = parser.add_argument_group('authentication & connection')
