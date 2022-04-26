@@ -229,13 +229,16 @@ def init_ldap_connection(target, tls_version, use_kerberos, domain, username, pa
 
 
 def init_ldap_session(use_kerberos, use_ldaps, dc_ip, domain, username, password, lmhash, nthash):
-    if use_kerberos:
+    if use_kerberos and not args.dc_host:
         target = get_machine_name(dc_ip, domain)
     else:
-        if dc_ip is not None:
-            target = args.dc_ip
+        if use_kerberos:
+            target = args.dc_host
         else:
-            target = domain
+            if dc_ip is not None:
+                target = args.dc_ip
+            else:
+                target = domain
 
     if use_ldaps is True:
         try:
@@ -467,6 +470,8 @@ def parse_args():
     parser.add_argument('--use-ldaps', action='store_true', help='Use LDAPS instead of LDAP')
     parser.add_argument('--only-abuse', action='store_true', help='Ignore accounts that already have an SPN and focus on targeted Kerberoasting')
     parser.add_argument('--no-abuse', action='store_true', help="Don't attempt targeted Kerberoasting")
+    parser.add_argument('--dc-host', action='store', help='Hostname of the target, can be used if port 445 is blocked or if NTLM is disabled')
+
 
     authconn = parser.add_argument_group('authentication & connection')
     authconn.add_argument('--dc-ip', action='store', metavar="ip address", help='IP Address of the domain controller or KDC (Key Distribution Center) for Kerberos. If omitted it will use the domain part (FQDN) specified in the identity parameter')
@@ -529,13 +534,16 @@ def main():
 
         # First of all, we need to get a TGT for the user
         userName = Principal(args.auth_username, type=constants.PrincipalNameType.NT_PRINCIPAL.value)
-        if args.use_kerberos:
+        if args.use_kerberos and not args.dc_host:
             target = get_machine_name(args.dc_ip, args.auth_domain)
         else:
-            if args.dc_ip is not None:
-                target = args.dc_ip
+            if args.use_kerberos:
+                target = args.dc_host
             else:
-                target = args.auth_domain
+                if args.dc_ip is not None:
+                    target = args.dc_ip
+                else:
+                    target = args.auth_domain
 
         TGT = TGS = None
         if args.use_kerberos:
