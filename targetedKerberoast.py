@@ -79,7 +79,7 @@ def ldap3_kerberos_login(connection, target, user, password, domain='', lmhash='
     from impacket.krb5.types import Principal, KerberosTime, Ticket
     import datetime
 
-    if TGT is not None or TGS is not None:
+    if TGT is not None or TGS is not None or aes_key is not None:
         useCache = False
 
     if useCache:
@@ -546,7 +546,7 @@ def main():
                     target = args.auth_domain
 
         TGT = TGS = None
-        if args.use_kerberos:
+        if args.use_kerberos and args.auth_aes_key is None:
             try:
                 ccache = CCache.loadFile(os.getenv('KRB5CCNAME'))
             except Exception as e:
