@@ -79,7 +79,7 @@ def ldap3_kerberos_login(connection, target, user, password, domain='', lmhash='
     from impacket.krb5.types import Principal, KerberosTime, Ticket
     import datetime
 
-    if TGT is not None or TGS is not None:
+    if TGT is not None or TGS is not None or aes_key is not None:
         useCache = False
 
     if useCache:
@@ -515,8 +515,12 @@ def main():
                 auth_nt_hash = "31d6cfe0d16ae931b73c59d7e0c089c0"
             if auth_lm_hash == "":
                 auth_lm_hash = "aad3b435b51404eeaad3b435b51404ee"
-                
-        ldap_server, ldap_session = init_ldap_session(dc_ip=args.dc_ip, use_kerberos=args.use_kerberos, use_ldaps=args.use_ldaps, domain=args.auth_domain, username=args.auth_username, password=args.auth_password, lmhash=auth_lm_hash, nthash=auth_nt_hash)
+        
+        use_kerb = args.use_kerberos
+        if args.auth_aes_key is not None:
+            use_kerb = True
+
+        ldap_server, ldap_session = init_ldap_session(dc_ip=args.dc_ip, use_kerberos=use_kerb, use_ldaps=args.use_ldaps, domain=args.auth_domain, username=args.auth_username, password=args.auth_password, lmhash=auth_lm_hash, nthash=auth_nt_hash)
         users = {}
         if args.request_user is not None:
             logger.info("Attacking user (%s)" % args.request_user)
@@ -546,7 +550,7 @@ def main():
                     target = args.auth_domain
 
         TGT = TGS = None
-        if args.use_kerberos:
+        if args.use_kerberos and args.auth_aes_key is None:
             try:
                 ccache = CCache.loadFile(os.getenv('KRB5CCNAME'))
             except Exception as e:
