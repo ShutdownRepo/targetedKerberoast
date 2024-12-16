@@ -609,7 +609,7 @@ def main():
                 krb5tgs = obtain_krb_hash(TGT=TGT, sAMAccountName=user, target_domain=(args.auth_domain if args.target_domain is None else args.target_domain), kdc_host=args.dc_ip)
                 handle_result(filename=args.output_file, result=krb5tgs, user=user)
             elif not args.no_abuse:
-                logger.debug("User (%s) has no SPN, attempting a targeted Kerberoasting now")
+                logger.debug("User (%s) has no SPN, attempting a targeted Kerberoasting now" % user)
                 temp_spn = 'somerandom/spn'
                 ldap_session.modify(users[user]['dn'], {'servicePrincipalName': [ldap3.MODIFY_REPLACE, [temp_spn]]})
                 try:
