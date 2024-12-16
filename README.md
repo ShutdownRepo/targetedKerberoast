@@ -37,6 +37,8 @@ optional arguments:
                         Requests TGS for the SPN associated to the user specified (just the username, no domain needed)
   -o OUTPUT_FILE, --output-file OUTPUT_FILE
                         Output filename to write ciphers in JtR/hashcat format
+  -f {hashcat,john}, --output-format {hashcat,john}
+                        Output format (default is "hashcat", "john" prepends usernames)
   --use-ldaps           Use LDAPS instead of LDAP
   --only-abuse          Ignore accounts that already have an SPN and focus on targeted Kerberoasting
   --no-abuse            Don't attempt targeted Kerberoasting

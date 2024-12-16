@@ -341,6 +341,9 @@ def obtain_krb_hash(TGT, sAMAccountName, target_domain, kdc_host):
 
 def handle_result(filename, result, user):
     if result is not None:
+        # Prepend the username for better output with john
+        if args.output_format == 'john':
+            result = user + ':' + result
         if filename is not None and filename != '':
             if len(os.path.dirname(filename)) != 0:
                 if not os.path.exists(os.path.dirname(filename)):
@@ -467,6 +470,7 @@ def parse_args():
     parser.add_argument('-U', '--users-file', help='File with user per line to test')
     parser.add_argument('--request-user', action='store', metavar='username', help='Requests TGS for the SPN associated to the user specified (just the username, no domain needed)')
     parser.add_argument('-o', '--output-file', action='store', help='Output filename to write ciphers in JtR/hashcat format')
+    parser.add_argument('-f', '--output-format', action='store', choices=['hashcat', 'john'], default='hashcat', help='Output format (default is "hashcat", "john" prepends usernames)')
     parser.add_argument('--use-ldaps', action='store_true', help='Use LDAPS instead of LDAP')
     parser.add_argument('--only-abuse', action='store_true', help='Ignore accounts that already have an SPN and focus on targeted Kerberoasting')
     parser.add_argument('--no-abuse', action='store_true', help="Don't attempt targeted Kerberoasting")
