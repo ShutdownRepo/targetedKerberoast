@@ -32,7 +32,7 @@ def get_machine_name(dc_ip, domain):
         s.login('', '')
     except Exception:
         if s.getServerName() == '':
-            raise Exception('Error while anonymous logging into %s' % domain)
+            raise Exception('Error while anonymous logging into %s. Try providing --dc-host argument' % domain)
     else:
         s.logoff()
     return s.getServerName()
@@ -83,11 +83,13 @@ def ldap3_kerberos_login(connection, target, user, password, domain='', lmhash='
         useCache = False
 
     if useCache:
+        ccache = None
         try:
             ccache = CCache.loadFile(os.getenv('KRB5CCNAME'))
         except Exception as e:
             pass
-        else:
+        
+        if ccache is not None:
             # retrieve domain information from CCache file if needed
             if domain == '':
                 domain = ccache.principal.realm['data'].decode('utf-8')
@@ -555,11 +557,13 @@ def main():
 
         TGT = TGS = None
         if args.use_kerberos and args.auth_aes_key is None:
+            ccache = None
             try:
                 ccache = CCache.loadFile(os.getenv('KRB5CCNAME'))
             except Exception as e:
                 pass
-            else:
+            
+            if ccache is not None:
                 # retrieve domain information from CCache file if needed
                 if args.auth_domain == '':
                     domain = ccache.principal.realm['data'].decode('utf-8')
