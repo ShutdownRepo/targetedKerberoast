@@ -531,9 +531,11 @@ def main():
             users = get_users_and_SPNs(ldap_session=ldap_session, domain=args.auth_domain, usernames=[args.request_user])
         elif args.users_file is not None:
             logger.info("Fetching usernames from file")
-            if os.path.exists(args.users_file):
-                with open(args.users_file, "r") as f:
-                    users = get_users_and_SPNs(ldap_session=ldap_session, domain=args.auth_domain, usernames= [line.strip() for line in f])
+            if not os.path.exists(args.users_file):
+                logger.error("Users file (%s) not found" % args.users_file)
+                sys.exit(1)
+            with open(args.users_file, "r") as f:
+                users = get_users_and_SPNs(ldap_session=ldap_session, domain=args.auth_domain, usernames= [line.strip() for line in f])
         else:
             logger.info("Fetching usernames from Active Directory with LDAP")
             users = get_users_and_SPNs(ldap_session=ldap_session, domain=args.auth_domain)
